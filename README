@@ -1,0 +1,5 @@
+This is a thin layer on top of the standard logging package,
+providing a couple of additional methods to support 'verbose'
+and 'debug' logging, which can often be controlled by command-
+line options.  The package includes methods to define and
+handle suitable command line options.
