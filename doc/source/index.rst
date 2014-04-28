@@ -55,3 +55,6 @@ To Do
 =====
 
 There is currently no way to configure the output format
+
+Add more options, to control output file(s), --quiet
+
