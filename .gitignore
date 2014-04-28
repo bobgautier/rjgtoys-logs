@@ -2,3 +2,4 @@
 htmlcov
 *.egg-info
 *pyc
+build
