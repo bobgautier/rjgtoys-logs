@@ -3,3 +3,5 @@ htmlcov
 *.egg-info
 *pyc
 build
+log.json.gz
+log.yaml.gz
