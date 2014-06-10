@@ -1,7 +1,8 @@
 
 import sys
 
-from rjgtoys.logs import getLogger, LogPoint, LogPointPrint, LogPointJSON, INFO, ERROR, append_action, wrapping, log_pid, log_time
+from rjgtoys.logs import getLogger
+from rjgtoys.logs.logpoint.core import LogPoint, LogPointPrint, LogPointJSON, INFO, ERROR, add_handler, add_builder, wrapper, log_pid, log_time, log_bigpid
 
 class LogHello(LogPoint):
     level = INFO
@@ -9,19 +10,21 @@ class LogHello(LogPoint):
 
 
 def main():
-    with wrapping("** {logpoint} {message} **"):
-        with wrapping("{module}:{function} {message}"):
+    with wrapper("** {logpoint} {message} **"):
+        with wrapper("{module}:{function} {message}"):
             LogHello()
 
 if __name__ == "__main__":
+
+    add_builder(log_pid)
+    add_builder(log_time)
+    add_builder(log_bigpid)
     
-    append_action(log_pid)
-    append_action(log_time)
-    append_action(LogPointJSON(ERROR,sys.stdout))
-    append_action(LogPointJSON(INFO,sys.stdout))
-    append_action(LogPointPrint(INFO,sys.stdout))
+    add_handler(LogPointJSON(ERROR,sys.stdout))
+    add_handler(LogPointJSON(INFO,sys.stdout))
+    add_handler(LogPointPrint(INFO,sys.stdout))
     
-    with wrapping("{filename}:{lineno} {message}"):
+    with wrapper("{filename}:{lineno} {message}"):
         LogHello()
 
     main()

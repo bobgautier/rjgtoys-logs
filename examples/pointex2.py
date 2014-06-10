@@ -1,7 +1,9 @@
 
 import sys
 
-from rjgtoys.logs import getLogger, LogPoint, LogPointPrint, INFO, ERROR, wrapping, enable_action, disable_action, send_to_logger
+from rjgtoys.logs import getLogger
+
+from rjgtoys.logs.logpoint.core import LogPoint, LogPointPrint, INFO, ERROR, wrapper, add_handler, remove_handler, send_to_logger
 
 class LogHello(LogPoint):
     level = INFO
@@ -12,20 +14,20 @@ def print_repr(lpt):
 
 
 def main():
-    with wrapping("** {logpoint} {message} **"):
-        with wrapping("{module}:{function} {message}"):
+    with wrapper("** {logpoint} {message} **"):
+        with wrapper("{module}:{function} {message}"):
             LogHello()
 
 if __name__ == "__main__":
     
-    disable_action(send_to_logger)
-    enable_action(LogPointPrint(ERROR,sys.stderr))
-    enable_action(LogPointPrint(INFO,sys.stdout))
+    add_handler(send_to_logger)
+    add_handler(LogPointPrint(ERROR,sys.stderr))
+    add_handler(LogPointPrint(INFO,sys.stdout))
     
-    with wrapping("{filename}:{lineno} {message}"):
+    with wrapper("{filename}:{lineno} {message}"):
         LogHello()
 
-    enable_action(print_repr)
+    add_handler(print_repr)
 
     main()
     LogHello()

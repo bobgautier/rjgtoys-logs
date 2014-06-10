@@ -6,5 +6,3 @@
 
 from ._logs import *
 
-from ._logpoint import *
-

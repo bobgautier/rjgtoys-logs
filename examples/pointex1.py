@@ -1,5 +1,6 @@
 
-from rjgtoys.logs import getLogger, LogPoint, INFO, ERROR, wrapping, enable_action
+from rjgtoys.logs import getLogger, INFO, ERROR
+from rjgtoys.logs.logpoint.core import  LogPoint, wrapper, add_handler, LogPointPrint
 
 class LogHello(LogPoint):
     level = INFO
@@ -13,16 +14,18 @@ class LogTricky(LogPoint):
     text = "Missing param: {missing}"
 
 if __name__ == "__main__":
-    with wrapping("{filename}:{lineno} {message}"):
+    import sys
+    add_handler(LogPointPrint(stream=sys.stdout,level=INFO))
+    with wrapper("{filename}:{lineno} {message}"):
         LogHello()
 
-    with wrapping("** {logpoint} {message} **"):
-        with wrapping("{module}:{function} {message}"):
+    with wrapper("** {logpoint} {message} **"):
+        with wrapper("{module}:{function} {message}"):
             LogHello()
         
     LogTricky()
 
-    enable_action(print_repr)
+    add_handler(print_repr)
     
     LogHello()
     

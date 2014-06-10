@@ -8,6 +8,8 @@ human-oriented way, in order to support building on top of
 the logging mechanism such things as monitoring, fault
 detection and metric collection.
 
+.. autoclass:: LogPoint
+
 """
 
 __all__ = "NOTSET,DEBUG,INFO,WARNING,ERROR,CRITICAL,LogPoint,LogCritical," \
@@ -25,12 +27,21 @@ from contextlib import contextmanager
 _wrappers = []
 
 @contextmanager
-def wrapping(m):
+def wrapper(m):
+    """
+    Creates a context in which logpoint messages are
+    wrapped in another message
+    """
+    
     wrap(m)
     yield
     unwrap()
 
 def wrap(m):
+    """
+    Adds a wrapper message to logpoint messages
+    """
+    
     _wrappers.insert(0,m)
     
 def unwrap():
@@ -61,6 +72,29 @@ class LogPointAction(object):
 
     def __call__(self,lpt):
         pass
+
+class LogPointActionChain(LogPointAction):
+    """
+    A set of actions to be taken when
+    processing a :class:`LogPoint`.
+    Each action has a name.
+    """
+    
+    def __init__(self,**actions):
+        self.actions = actions
+        
+    def update(self,**actions):
+        self.actions.update(actions)
+        
+    def __call__(self,lpt):
+        for n,a in self.actions.iteritems():
+            a(lpt)
+ rjgt   
+    def __getitem__(self,n):
+        return self.actions[n]
+
+    def __setitem__(self,n,a):
+        self.actions[n] = a
 
 class LogPointLoggerAction(LogPointAction):
     

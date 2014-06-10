@@ -13,8 +13,8 @@ setup(
     long_description = readfile('README'),
     license = "GPL",
     keywords = "logs",
-    namespace_packages=['rjgtoys'],
-    packages = ['rjgtoys.logs'],
+    namespace_packages=['rjgtoys','rjgtoys.logs.logpoint'],
+    packages = ['rjgtoys.logs','rjgtoys.logs.logpoint.core'],
     classifiers = [
         "Development Status :: 2 - Pre-Alpha",
         "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)"
