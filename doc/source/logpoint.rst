@@ -1,6 +1,6 @@
 
-:class:`LogPoint`: An better way to create logs
-===============================================
+:class:`LogPoint`: A better way to create logs
+==============================================
 
 This module provides an alternative to the traditional text-based logging interface.
 

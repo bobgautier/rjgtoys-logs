@@ -1,5 +1,5 @@
 
-from rjgtoys import logs
+import rjgtoys.logs.core as logs
 
 from argparse import ArgumentParser
 

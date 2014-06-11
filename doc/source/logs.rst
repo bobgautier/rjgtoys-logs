@@ -1,5 +1,5 @@
 
-.. automodule:: rjgtoys.logs
+.. automodule:: rjgtoys.logs.core
    
 Example
 -------
