@@ -120,5 +120,9 @@ class LogActionList(list,LogAction):
         self[0:] = []
         yield
         self[0:] = temp
+
+    def clear(self):
+        self[0:] = []
+        return self
         
 Actions = LogActionList()

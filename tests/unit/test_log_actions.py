@@ -62,6 +62,10 @@ def test_logactionlist_ops():
     
     assert ll == [1,2,3,4,5,6,8,9]
     
+    ll.clear()
+    
+    assert ll == []
+    
 def test_logactionlist_discard():
     """ Test discard and implicitly, remove """
     
