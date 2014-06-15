@@ -1,9 +1,9 @@
 
 import sys
 
-from rjgtoys.logs import getLogger
+from rjgtoys.logs.core import getLogger
 
-from rjgtoys.logs.logpoint.core import LogPoint, LogPointPrint, INFO, ERROR, wrapper, add_handler, remove_handler, send_to_logger
+from rjgtoys.logs.logpoint.core import LogPoint, PrintHandler, INFO, ERROR, wrapper, Handlers, LoggerHandler
 
 class LogHello(LogPoint):
     level = INFO
@@ -20,14 +20,16 @@ def main():
 
 if __name__ == "__main__":
     
-    add_handler(send_to_logger)
-    add_handler(LogPointPrint(ERROR,sys.stderr))
-    add_handler(LogPointPrint(INFO,sys.stdout))
+    Handlers.extend((
+        LoggerHandler(),
+        PrintHandler(ERROR,sys.stderr),
+        PrintHandler(INFO,sys.stdout)
+        ))
     
     with wrapper("{filename}:{lineno} {message}"):
         LogHello()
 
-    add_handler(print_repr)
+    Handlers.append(LoggerHandler())
 
     main()
     LogHello()

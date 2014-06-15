@@ -17,7 +17,8 @@ __all__ = "NOTSET,DEBUG,INFO,WARNING,ERROR,CRITICAL,LogPoint,LogCritical," \
 
 from logging import NOTSET, DEBUG, INFO, WARNING, ERROR, CRITICAL
 
-from ._actions import run_handlers, run_builders
+from ._actions import Actions
+from ._formatters import StringFormatters, ReprFormatters
 
 import string
 import inspect
@@ -50,26 +51,36 @@ class LogPoint(object):
 
         self.module = inspect.getmodule(mod).__name__
 
-        run_builders(self)
-        run_handlers(self)
-        
+        Actions(self)
+
     def dict(self):
         return dict((n,v) for (n,v) in self.__dict__.items() if not n.startswith('_') and not callable(v))
 
     def __str__(self):
-        fmt = MsgFormatter()
-        msg = fmt.vformat(self.text,(),self.dict())
-
-        if fmt.missed:
-            raise Exception("missing parameters: %s" % (",".join(list(fmt.missed))))
-
-        return msg
+        
+        try:
+            return self._string
+        except AttributeError:
+            pass
+        
+        StringFormatters(self)
+        try:
+            return self._string
+        except AttributeError:
+            return super(LogPoint,self).__str__()
         
     def __repr__(self):
-        params = ",".join("%s=%r" % (k,v) for (k,v) in self.__dict__.items() if not k.startswith('_'))
-        
-        return "%s(%s)" % (self.__class__.__name__,params)
-
+        try:
+            return self._repr
+        except AttributeError:
+            pass
+            
+        ReprFormatters(self)
+        try:
+            return self._repr
+        except AttributeError:
+            return super(LogPoint,self).__repr__()
+            
 class LogCritical(LogPoint):
     level = CRITICAL
 
